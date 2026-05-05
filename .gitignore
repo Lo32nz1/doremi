@@ -1,0 +1,102 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Visual Studio Code related
+.vscode/
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# Android related
+**/android/local.properties
+**/android/**/generated
+**/android/app/src/main/res/drawable-mdpi/ic_launcher.png
+**/android/app/src/main/res/drawable-hdpi/ic_launcher.png
+**/android/app/src/main/res/drawable-xhdpi/ic_launcher.png
+**/android/app/src/main/res/drawable-xxhdpi/ic_launcher.png
+**/android/app/src/main/res/drawable-xxxhdpi/ic_launcher.png
+
+# iOS related
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/App.framework
+**/ios/Flutter/App.podspec
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Runner/GeneratedPluginRegistrant.h
+**/ios/Runner/GeneratedPluginRegistrant.m
+**/ios/Pods/
+**/ios/.res/
+**/ios/DerivedData/
+**/ios/build/
+**/ios/config/
+**/ios/.symlinks/
+**/ios/Podfile.lock
+
+# macOS related
+**/macos/Flutter/ephemeral/
+**/macos/Pods/
+**/macos/Podfile.lock
+
+# Linux related
+**/linux/flutter/ephemeral/
+
+# Windows related
+**/windows/flutter/ephemeral/
+**/windows/CMakeCache.txt
+**/windows/CMakeFiles/
+**/windows/cmake_install.cmake
+**/windows/Runner.sln
+**/windows/Runner.vcxproj
+**/windows/Runner.vcxproj.filters
+**/windows/Runner.vcxproj.user
+**/windows/flutter/generated_plugin_registrant.cc
+**/windows/flutter/generated_plugin_registrant.h
+**/windows/flutter/generated_plugins.cmake
+
+# Exceptions
+!/assets/
+!/lib/
+!/test/
+!pubspec.yaml
+!pubspec.lock
