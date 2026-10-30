@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:doremi/screens/songBook_screen.dart';
-import 'package:doremi/screens/perfil_screen.dart';
+import 'package:doremi/screens/album_screen.dart';
+import 'package:doremi/screens/setlist_screen.dart';
+import 'package:doremi/screens/tuner_screen.dart';
+import 'package:doremi/screens/config_screen.dart';
 
 void main() {
   runApp(const MaterialApp(home: CarcasaBase()));
@@ -17,11 +20,11 @@ class _CarcasaBaseState extends State<CarcasaBase> {
   int _indiceActual = 0;
 
   final List<Widget> _pantallas = [
-    const SongBookScreen(),
-    const Center(child: Text('Contenido de Album', style: TextStyle(fontSize: 24))),
-    const Center(child: Text('Contenido de las Listas', style: TextStyle(fontSize: 24))),
-    const Center(child: Text('Contenido de Afinador', style: TextStyle(fontSize: 24))),
-    const PerfilScreen(),
+    const InicioScreen(),
+    const AlbumScreen(),
+    const SetlistScreen(),
+    const TunerScreen(),
+    const ConfigScreen(),
   ];
 
   @override
