@@ -18,7 +18,11 @@ class SettingsScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 4, bottom: 24),
                 child: Text(
                   'Configuración',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onSurface),
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
               ),
 
@@ -36,14 +40,24 @@ class SettingsScreen extends StatelessWidget {
                       subtitle: library.libraryPath,
                     ),
                     _divider(context),
-                    _infoRow(context, 'Canciones encontradas', '${library.songs.length}'),
+                    _infoRow(
+                      context,
+                      'Canciones encontradas',
+                      '${library.songs.length}',
+                    ),
                     _divider(context),
-                    _infoRow(context, 'Categorías (carpetas)', '${library.songsByCategory.length}'),
+                    _infoRow(
+                      context,
+                      'Categorías (carpetas)',
+                      '${library.songsByCategory.length}',
+                    ),
                     _divider(context),
                   ],
                   _actionButton(
                     context,
-                    label: library.hasLibrary ? 'Cambiar carpeta' : 'Elegir carpeta',
+                    label: library.hasLibrary
+                        ? 'Cambiar carpeta'
+                        : 'Elegir carpeta',
                     icon: Icons.folder_open,
                     onTap: library.pickLibraryFolder,
                   ),
@@ -63,11 +77,24 @@ class SettingsScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Tamaño de letra', style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.70), fontSize: 14)),
+                        Text(
+                          'Tamaño de letra',
+                          style: TextStyle(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.70),
+                            fontSize: 14,
+                          ),
+                        ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.15),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.primary.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
@@ -84,11 +111,13 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   Slider(
                     value: settings.fontSize,
-                    min: 12,
-                    max: 24,
-                    divisions: 6,
+                    min: 10,
+                    max: 40,
+                    divisions: 15,
                     activeColor: Theme.of(context).colorScheme.primary,
-                    inactiveColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.12),
+                    inactiveColor: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.12),
                     onChanged: settings.setFontSize,
                   ),
                   _divider(context),
@@ -120,7 +149,11 @@ class SettingsScreen extends StatelessWidget {
                 children: [
                   _infoRow(context, 'Versión', '1.0.0'),
                   _divider(context),
-                  _infoRow(context, 'Formatos soportados', '.chord  .pro  .txt'),
+                  _infoRow(
+                    context,
+                    'Formatos soportados',
+                    '.chord  .pro  .txt',
+                  ),
                   _divider(context),
                   _infoRow(context, 'Sincronización', 'Syncthing (local)'),
                 ],
@@ -134,7 +167,8 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSection(BuildContext context, {
+  Widget _buildSection(
+    BuildContext context, {
     required String title,
     required IconData icon,
     required List<Widget> children,
@@ -151,7 +185,11 @@ class SettingsScreen extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(16, 14, 16, 4),
             child: Row(
               children: [
-                Icon(icon, color: Theme.of(context).colorScheme.primary, size: 16),
+                Icon(
+                  icon,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 16,
+                ),
                 const SizedBox(width: 8),
                 Text(
                   title.toUpperCase(),
@@ -172,7 +210,12 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _infoRow(BuildContext context, String label, String value, {String? subtitle}) {
+  Widget _infoRow(
+    BuildContext context,
+    String label,
+    String value, {
+    String? subtitle,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Row(
@@ -182,22 +225,46 @@ class SettingsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.70), fontSize: 14)),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.70),
+                    fontSize: 14,
+                  ),
+                ),
                 if (subtitle != null) ...[
                   const SizedBox(height: 2),
-                  Text(subtitle, style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.30), fontSize: 11)),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.30),
+                      fontSize: 11,
+                    ),
+                  ),
                 ],
               ],
             ),
           ),
           const SizedBox(width: 12),
-          Text(value, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontWeight: FontWeight.w500, fontSize: 14)),
+          Text(
+            value,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontWeight: FontWeight.w500,
+              fontSize: 14,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _switchRow(BuildContext context, {
+  Widget _switchRow(
+    BuildContext context, {
     required String label,
     required String subtitle,
     required bool value,
@@ -211,24 +278,59 @@ class SettingsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.70), fontSize: 14)),
-                Text(subtitle, style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.38), fontSize: 12)),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.70),
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.38),
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
           ),
-          Switch(value: value, onChanged: onChanged, activeColor: Theme.of(context).colorScheme.primary),
+          Switch(
+            value: value,
+            onChanged: onChanged,
+            activeColor: Theme.of(context).colorScheme.primary,
+          ),
         ],
       ),
     );
   }
 
-  Widget _actionButton(BuildContext context, {required String label, required IconData icon, required VoidCallback onTap}) {
+  Widget _actionButton(
+    BuildContext context, {
+    required String label,
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
       child: TextButton.icon(
         onPressed: onTap,
-        icon: Icon(icon, size: 18, color: Theme.of(context).colorScheme.primary),
-        label: Text(label, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 14)),
+        icon: Icon(
+          icon,
+          size: 18,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        label: Text(
+          label,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.primary,
+            fontSize: 14,
+          ),
+        ),
         style: TextButton.styleFrom(
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -237,5 +339,10 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _divider(BuildContext context) => Divider(height: 1, color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.12), indent: 16, endIndent: 16);
+  Widget _divider(BuildContext context) => Divider(
+    height: 1,
+    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.12),
+    indent: 16,
+    endIndent: 16,
+  );
 }

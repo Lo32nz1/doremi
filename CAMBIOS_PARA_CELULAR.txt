@@ -1,0 +1,70 @@
+IDEAS Y CAMBIOS PARA LA APP
+==========================
+
+CAMBIO 1
+--------
+Pantalla o parte de la app:
+
+Estudio
+
+¿Qué te gustaría cambiar o agregar?
+
+No hay tamaño para que la aplicación funcione en dispositivos moviles medianamente pequeños cuando está acostada la pantalla.
+
+¿Cómo te gustaría que se vea en el celular?
+
+Que se vea como cuando está en vertical siempre y cuando sean dispositivos pequeños, cuando se trata de tables dejarlo como en computadoras cuando está en vertical y cuando está en horizontal como en telefonos celulares
+
+¿Cómo esperás que funcione al tocarlo o usarlo?
+
+Que funcione normalmente solo que se vea para poder utilizarla
+
+Ejemplo, dibujo o referencia (opcional):
+
+Prioridad (alta / media / baja): media
+
+CAMBIO 2
+--------
+Pantalla o parte de la app:
+
+Set List
+
+¿Qué te gustaría cambiar o agregar?
+
+Cuando estoy en una setlist la idea es que cuando elija las canciones se vea como se ve en el estudio, no como se veía antes. No se si se está reutilizando código o hiciste mas código para eso, pero la idea es que se vea como se ve en el estudio pero con la set list, agregando un botón de siguiente canción en alguna parte para cambiar a la otra canción ya seleccionada.
+
+¿Cómo te gustaría que se vea en el celular?
+
+Que se vea un poco mejor la parte de setlist, porque está un poco rara, un ícolo al lado del nombre de la set list por ejemplo. ademas que tenga la misma visión que en el estudio cuando elijo una canción para tocar desde la setlist. (En este caso no hace falta la sección de la izquierda que se desplaza, solamente con la parte donde se ve ala canción es mas que suficiente)
+
+¿Cómo esperás que funcione al tocarlo o usarlo?
+
+Que funcione normalmente solo que se vea para poder utilizarla
+
+Ejemplo, dibujo o referencia (opcional):
+
+Prioridad (alta / media / baja): Alta
+
+CAMBIO 3
+--------
+Pantalla o parte de la app:
+
+En todas
+
+¿Qué te gustaría cambiar o agregar?
+
+Solo en el caso de que el apretar el botón del telefono para volver atras, y eso cierre la aplicación, preguntar si desea cerrar la aplicación, para evitar cierres inesperados. Pero si apreta el botón de casa del telefono, si cerrar, solamente en el caso de apretar el botón de retroceder.
+
+¿Cómo te gustaría que se vea en el celular?
+
+Una ventana flotante preguntado si desea salir del telefono, con un si y un no, solo en el caso de apretar la botón de retroseder
+
+¿Cómo esperás que funcione al tocarlo o usarlo?
+
+Que funcione normalmente solo que se vea para poder utilizarla
+
+Ejemplo, dibujo o referencia (opcional):
+
+Prioridad (alta / media / baja): bajaue se vea un poco mejor la parte de setlist, porque está un poco rara, un ícolo al lado del nombre de la set list por ejemplo. ademas que tenga la misma visión que en el estudio cuando elijo una canción para tocar desde la setlist. (En este caso no hace falta la sección de la izquierda que se desplaza, solamente con la parte donde se ve ala canción es mas que suficiente)
+
+

@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/song.dart';
@@ -32,15 +31,16 @@ class ChordLineWidget extends StatelessWidget {
       );
     }
 
-
     // ── Línea vacía → espacio vertical ───────────────────────────────────────
     if (line.isEmpty) {
-      return !showChords ? const SizedBox(height: 6) : const SizedBox(height: 12);
+      return !showChords
+          ? const SizedBox(height: 6)
+          : const SizedBox(height: 12);
     }
 
     final lyricText = line.chunks.map((c) => c.lyrics).join();
     if (!showChords && lyricText.trim().isEmpty) {
-       return const SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     // Sin acordes, o acordes ocultos → solo texto de letra
@@ -48,10 +48,7 @@ class ChordLineWidget extends StatelessWidget {
     if (!line.hasChords || !showChords) {
       content = Padding(
         padding: const EdgeInsets.symmetric(vertical: 2),
-        child: Text(
-          lyricText,
-          style: _lyricStyle(context),
-        ),
+        child: Text(lyricText, style: _lyricStyle(context)),
       );
     } else {
       // Con acordes: Usamos Wrap para que los acordes sigan a su letra al romper línea
@@ -86,8 +83,8 @@ class ChordLineWidget extends StatelessWidget {
 
   Widget _buildChunk(BuildContext context, SongChunk chunk) {
     final hasChord = chunk.chord != null && chunk.chord!.isNotEmpty;
-    
-    // Si no hay letra pero hay acorde (ej: intro), añadimos un espacio para que el Wrap 
+
+    // Si no hay letra pero hay acorde (ej: intro), añadimos un espacio para que el Wrap
     // lo trate como un elemento con ancho mínimo.
     final chordText = hasChord ? chunk.chord! : '';
     final lyricsText = chunk.lyrics;
@@ -98,7 +95,9 @@ class ChordLineWidget extends StatelessWidget {
       children: [
         // Fila de acordes
         Text(
-          hasChord ? chordText : ' ', // Espacio para mantener altura de la línea de acordes
+          hasChord
+              ? chordText
+              : ' ', // Espacio para mantener altura de la línea de acordes
           style: _chordStyle(context),
         ),
         // Fila de letras
@@ -116,13 +115,20 @@ class ChordLineWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.07),
         borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.30), width: 1),
+        border: Border.all(
+          color: Theme.of(
+            context,
+          ).colorScheme.onSurface.withValues(alpha: 0.30),
+          width: 1,
+        ),
       ),
       child: Text(
         text.toUpperCase(),
         style: GoogleFonts.inter(
           fontSize: fontSize * 0.80,
-          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.70),
+          color: Theme.of(
+            context,
+          ).colorScheme.onSurface.withValues(alpha: 0.70),
           fontWeight: FontWeight.w700,
           letterSpacing: 1.8,
         ),
@@ -131,18 +137,18 @@ class ChordLineWidget extends StatelessWidget {
   }
 
   TextStyle _chordStyle(BuildContext context) => GoogleFonts.sourceCodePro(
-        fontSize: fontSize,
-        fontWeight: FontWeight.w700,
-        color: Theme.of(context).colorScheme.primary,
-        height: 1.2, // Ajustamos la altura para pegarlos un poquito más
-        letterSpacing: 0,
-      );
+    fontSize: fontSize,
+    fontWeight: FontWeight.w700,
+    color: Theme.of(context).colorScheme.primary,
+    height: 1.2, // Ajustamos la altura para pegarlos un poquito más
+    letterSpacing: 0,
+  );
 
   TextStyle _lyricStyle(BuildContext context) => GoogleFonts.sourceCodePro(
-        fontSize: fontSize,
-        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.92),
-        height: 1.4, // Altura más compacta para que el acorde no quede volando
-        fontWeight: FontWeight.w400,
-        letterSpacing: 0,
-      );
+    fontSize: fontSize,
+    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.92),
+    height: 1.4, // Altura más compacta para que el acorde no quede volando
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0,
+  );
 }
