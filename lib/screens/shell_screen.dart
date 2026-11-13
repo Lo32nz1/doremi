@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/song.dart';
 import 'home_screen.dart';
 import 'setlists/setlists_screen.dart';
@@ -69,10 +71,50 @@ class _ShellScreenState extends State<ShellScreen> {
     });
   }
 
+  Future<void> _confirmExit() async {
+    final shouldExit = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('¿Cerrar DOREMI?'),
+        content: const Text('¿Querés salir de la aplicación?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text('No'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: const Text('Sí, salir'),
+          ),
+        ],
+      ),
+    );
+    if (shouldExit == true) {
+      await SystemNavigator.pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final isWide = MediaQuery.of(context).size.width >= 600;
-    return isWide ? _buildWideLayout() : _buildNarrowLayout();
+    final size = MediaQuery.sizeOf(context);
+    final isPhone = size.shortestSide < 600;
+    final isWide = !isPhone;
+    final isAndroid = Theme.of(context).platform == TargetPlatform.android;
+
+    return PopScope<void>(
+      canPop: !isPhone || !isAndroid,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop || !isPhone || !isAndroid) {
+          return;
+        }
+        if (_selectedIndex == 1 && _isShowingStudyReader) {
+          _studyKey.currentState?.showSongList();
+          return;
+        }
+        unawaited(_confirmExit());
+      },
+      child: isWide ? _buildWideLayout() : _buildNarrowLayout(),
+    );
   }
 
   // ─── Layout móvil (barra abajo) ───────────────────────────────────────────
@@ -123,7 +165,7 @@ class _ShellScreenState extends State<ShellScreen> {
     final hideRailForReader =
         _selectedIndex == 1 &&
         _isShowingStudyReader &&
-        size.width < 900 &&
+        size.width < 1400 &&
         size.width > size.height;
 
     return Scaffold(
@@ -214,7 +256,7 @@ class _RailHeader extends StatelessWidget {
           const Icon(Icons.music_note, color: Color(0xFFF5A623), size: 30),
           const SizedBox(height: 4),
           Text(
-            'Cancionero',
+            'DOREMI',
             style: TextStyle(
               color: Theme.of(
                 context,

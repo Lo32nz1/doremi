@@ -77,7 +77,7 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(width: 8),
           const Expanded(
             child: Text(
-              'Cancionero',
+              'DOREMI',
               style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
             ),
           ),
@@ -291,7 +291,7 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             const Text(
-              '¡Bienvenido al Cancionero!',
+              '¡Bienvenido a DOREMI!',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),

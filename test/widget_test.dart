@@ -11,6 +11,96 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  testWidgets('study adapts tablet portrait and landscape layouts', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(800, 1100);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    SharedPreferences.setMockInitialValues({});
+    final preferences = await SharedPreferences.getInstance();
+    final library = LibraryProvider();
+    final settings = SettingsProvider(preferences);
+    final setlists = SetlistProvider();
+    addTearDown(library.dispose);
+    addTearDown(settings.dispose);
+    addTearDown(setlists.dispose);
+    await setlists.loadSetlists();
+
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(value: library),
+          ChangeNotifierProvider.value(value: settings),
+          ChangeNotifierProvider.value(value: setlists),
+        ],
+        child: const MaterialApp(home: ShellScreen()),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Estudio').first);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(NavigationRail), findsOneWidget);
+    expect(find.byType(PageView), findsNothing);
+    expect(find.text('Selecciona una canción de la lista'), findsOneWidget);
+
+    tester.view.physicalSize = const Size(1100, 800);
+    await tester.pumpAndSettle();
+    expect(find.byType(PageView), findsOneWidget);
+
+    await tester.drag(find.byType(PageView), const Offset(-500, 0));
+    await tester.pumpAndSettle();
+    expect(find.byType(NavigationRail), findsNothing);
+    expect(find.byTooltip('Volver a canciones'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('Android back asks before closing from the home screen', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(360, 800);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    SharedPreferences.setMockInitialValues({});
+    final preferences = await SharedPreferences.getInstance();
+    final library = LibraryProvider();
+    final settings = SettingsProvider(preferences);
+    final setlists = SetlistProvider();
+    addTearDown(library.dispose);
+    addTearDown(settings.dispose);
+    addTearDown(setlists.dispose);
+    await setlists.loadSetlists();
+
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(value: library),
+          ChangeNotifierProvider.value(value: settings),
+          ChangeNotifierProvider.value(value: setlists),
+        ],
+        child: MaterialApp(
+          theme: ThemeData(platform: TargetPlatform.android),
+          home: const ShellScreen(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+
+    expect(find.text('¿Cerrar DOREMI?'), findsOneWidget);
+    await tester.tap(find.text('No'));
+    await tester.pumpAndSettle();
+    expect(find.text('¿Cerrar DOREMI?'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('study keeps the app navigation visible on its song list', (
     tester,
   ) async {
@@ -86,7 +176,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('¡Bienvenido al Cancionero!'), findsOneWidget);
+    expect(find.text('¡Bienvenido a DOREMI!'), findsOneWidget);
     expect(find.text('Elegir carpeta'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
@@ -109,6 +199,25 @@ void main() {
       '/songs/test.chord',
     ]);
     expect(preferences.getInt('song_open_count'), 1);
+  });
+
+  test('setlist reorder accepts the adjusted destination index', () async {
+    SharedPreferences.setMockInitialValues({});
+    final setlists = SetlistProvider();
+    addTearDown(setlists.dispose);
+    await setlists.createSetlist('Prueba');
+    final setlistId = setlists.setlists.single.id;
+    await setlists.addSongToSetlist(setlistId, '/songs/one.chord');
+    await setlists.addSongToSetlist(setlistId, '/songs/two.chord');
+    await setlists.addSongToSetlist(setlistId, '/songs/three.chord');
+
+    await setlists.reorderSongs(setlistId, 0, 2);
+
+    expect(setlists.setlists.single.songPaths, [
+      '/songs/two.chord',
+      '/songs/three.chord',
+      '/songs/one.chord',
+    ]);
   });
 
   testWidgets('mobile song controls fit a narrow screen and respond to taps', (

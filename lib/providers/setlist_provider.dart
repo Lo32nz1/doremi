@@ -14,7 +14,7 @@ class SetlistProvider with ChangeNotifier {
     try {
       final prefs = await SharedPreferences.getInstance();
       final String? data = prefs.getString(_storageKey);
-      
+
       if (data != null) {
         final List<dynamic> decoded = jsonDecode(data);
         _setlists = decoded.map((item) => Setlist.fromJson(item)).toList();
@@ -83,13 +83,14 @@ class SetlistProvider with ChangeNotifier {
   }
 
   /// Reordena canciones dentro de un Setlist.
-  Future<void> reorderSongs(String setlistId, int oldIndex, int newIndex) async {
+  Future<void> reorderSongs(
+    String setlistId,
+    int oldIndex,
+    int newIndex,
+  ) async {
     final listIndex = _setlists.indexWhere((s) => s.id == setlistId);
     if (listIndex >= 0) {
       final setlist = _setlists[listIndex];
-      if (oldIndex < newIndex) {
-        newIndex -= 1;
-      }
       final String item = setlist.songPaths.removeAt(oldIndex);
       setlist.songPaths.insert(newIndex, item);
       notifyListeners();

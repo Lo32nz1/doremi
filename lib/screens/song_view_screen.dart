@@ -20,14 +20,22 @@ class SongViewScreen extends StatefulWidget {
   final SongMetadata? metadata;
   final bool showBackButton;
   final bool mobilePortrait;
+  final bool hideSongPanel;
   final VoidCallback? onBackToSongList;
+  final VoidCallback? onPreviousSong;
+  final VoidCallback? onNextSong;
+  final String backButtonTooltip;
 
   const SongViewScreen({
     super.key,
     this.metadata,
     this.showBackButton = true,
     this.mobilePortrait = false,
+    this.hideSongPanel = false,
     this.onBackToSongList,
+    this.onPreviousSong,
+    this.onNextSong,
+    this.backButtonTooltip = 'Volver a canciones',
   });
 
   @override
@@ -63,7 +71,7 @@ class _SongViewScreenState extends State<SongViewScreen> {
   double _initialFontSize = 16;
 
   static const double _maxContentWidth = 780;
-  static const double _panelBreakpoint = 900;
+  static const double _panelBreakpoint = 600;
   static const double _minPanelWidth = 160;
   static const double _maxPanelWidth = 420;
   double _panelWidth = 235;
@@ -195,7 +203,9 @@ class _SongViewScreenState extends State<SongViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isWide = MediaQuery.of(context).size.width >= _panelBreakpoint;
+    final isWide =
+        !widget.hideSongPanel &&
+        MediaQuery.of(context).size.width >= _panelBreakpoint;
 
     return CallbackShortcuts(
       bindings: <ShortcutActivator, VoidCallback>{
@@ -402,7 +412,7 @@ class _SongViewScreenState extends State<SongViewScreen> {
               child: Row(
                 children: [
                   IconButton(
-                    tooltip: 'Volver a canciones',
+                    tooltip: widget.backButtonTooltip,
                     icon: const Icon(Icons.library_music_outlined),
                     onPressed: _goBack,
                   ),
@@ -436,6 +446,18 @@ class _SongViewScreenState extends State<SongViewScreen> {
                         context.read<LibraryProvider>(),
                         onSongCreated: _switchSong,
                       ),
+                    ),
+                  if (widget.onPreviousSong != null)
+                    IconButton(
+                      tooltip: 'Canción anterior',
+                      onPressed: widget.onPreviousSong,
+                      icon: const Icon(Icons.skip_previous),
+                    ),
+                  if (widget.onNextSong != null)
+                    IconButton(
+                      tooltip: 'Siguiente canción',
+                      onPressed: widget.onNextSong,
+                      icon: const Icon(Icons.skip_next),
                     ),
                   _buildCompactActions(),
                 ],

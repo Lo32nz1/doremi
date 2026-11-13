@@ -10,28 +10,30 @@ import 'screens/shell_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
-  
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LibraryProvider()),
         ChangeNotifierProvider(create: (_) => SettingsProvider(prefs)),
-        ChangeNotifierProvider(create: (_) => SetlistProvider()..loadSetlists()),
+        ChangeNotifierProvider(
+          create: (_) => SetlistProvider()..loadSetlists(),
+        ),
       ],
-      child: const CancioneroApp(),
+      child: const DoremiApp(),
     ),
   );
 }
 
-class CancioneroApp extends StatelessWidget {
-  const CancioneroApp({super.key});
+class DoremiApp extends StatelessWidget {
+  const DoremiApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<SettingsProvider>(
       builder: (context, settings, _) {
         return MaterialApp(
-          title: 'Cancionero',
+          title: 'DOREMI',
           debugShowCheckedModeBanner: false,
           themeMode: settings.isDarkMode ? ThemeMode.dark : ThemeMode.light,
           themeAnimationDuration: Duration.zero,
@@ -51,7 +53,11 @@ class CancioneroApp extends StatelessWidget {
               backgroundColor: Color(0xFFF3F4F6),
               elevation: 0,
               iconTheme: IconThemeData(color: Colors.black87),
-              titleTextStyle: TextStyle(color: Colors.black87, fontSize: 20, fontWeight: FontWeight.bold),
+              titleTextStyle: TextStyle(
+                color: Colors.black87,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             useMaterial3: true,
           ),

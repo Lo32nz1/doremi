@@ -57,7 +57,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
           const SizedBox(width: 10),
           Expanded(
             child: Text(
-              'Cancionero',
+              'DOREMI',
               style: TextStyle(fontSize: isSmall ? 20 : 24, fontWeight: FontWeight.bold),
             ),
           ),
@@ -158,7 +158,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
             ),
             const SizedBox(height: 32),
             const Text(
-              '¡Bienvenido al Cancionero!',
+              '¡Bienvenido a DOREMI!',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),

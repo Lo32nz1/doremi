@@ -16,14 +16,23 @@ class StudyScreen extends StatefulWidget {
 }
 
 class StudyScreenState extends State<StudyScreen> {
-  static const _splitBreakpoint = 900.0;
+  static const _phoneShortestSide = 600.0;
+  static const _tabletLandscapeMaxWidth = 1400.0;
 
   final _pageController = PageController();
   late final TextEditingController _searchController;
   SongMetadata? _selectedSong;
   bool _isShowingReader = false;
 
-  bool get _usesPages => MediaQuery.sizeOf(context).width < _splitBreakpoint;
+  bool get _usesPages {
+    final size = MediaQuery.sizeOf(context);
+    final isPhone = size.shortestSide < _phoneShortestSide;
+    final isTabletLandscape =
+        size.shortestSide >= _phoneShortestSide &&
+        size.width > size.height &&
+        size.width < _tabletLandscapeMaxWidth;
+    return isPhone || isTabletLandscape;
+  }
 
   @override
   void initState() {
@@ -71,6 +80,8 @@ class StudyScreenState extends State<StudyScreen> {
     );
   }
 
+  void showSongList() => _showSongList();
+
   void _onPageChanged(int page) {
     final isShowingReader = page == 1;
     if (_isShowingReader == isShowingReader) return;
@@ -85,6 +96,7 @@ class StudyScreenState extends State<StudyScreen> {
         key: ValueKey(_selectedSong?.filePath),
         metadata: _selectedSong,
         showBackButton: false,
+        hideSongPanel: false,
       );
     }
 
@@ -98,9 +110,8 @@ class StudyScreenState extends State<StudyScreen> {
           SongViewScreen(
             key: ValueKey(_selectedSong?.filePath),
             metadata: _selectedSong,
-            mobilePortrait:
-                MediaQuery.sizeOf(context).height >
-                MediaQuery.sizeOf(context).width,
+            mobilePortrait: true,
+            hideSongPanel: true,
             onBackToSongList: _showSongList,
           ),
         ],

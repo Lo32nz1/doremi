@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.cancionero" "\0"
-            VALUE "FileDescription", "cancionero" "\0"
+            VALUE "FileDescription", "DOREMI" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "cancionero" "\0"
+            VALUE "InternalName", "DOREMI" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 com.cancionero. All rights reserved." "\0"
-            VALUE "OriginalFilename", "cancionero.exe" "\0"
-            VALUE "ProductName", "cancionero" "\0"
+            VALUE "OriginalFilename", "doremi.exe" "\0"
+            VALUE "ProductName", "DOREMI" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

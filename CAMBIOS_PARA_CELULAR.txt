@@ -65,6 +65,26 @@ Que funcione normalmente solo que se vea para poder utilizarla
 
 Ejemplo, dibujo o referencia (opcional):
 
-Prioridad (alta / media / baja): bajaue se vea un poco mejor la parte de setlist, porque está un poco rara, un ícolo al lado del nombre de la set list por ejemplo. ademas que tenga la misma visión que en el estudio cuando elijo una canción para tocar desde la setlist. (En este caso no hace falta la sección de la izquierda que se desplaza, solamente con la parte donde se ve ala canción es mas que suficiente)
+Prioridad (alta / media / baja): baja
 
+CAMBIO 4
+--------
+Pantalla o parte de la app:
 
+Todas
+
+¿Qué te gustaría cambiar o agregar?
+
+Cambio del nombre de la aplicación a "DOREMI".
+
+¿Cómo te gustaría que se vea en el celular?
+
+Donde se ponga el nombre de la aplicación, que en vez de decir "Cancionero" diga "DOREMI". En caso de ser posible, crear un ícono para la aplicación, la idea del ícono es que diga literalmente "DOREMI"
+
+¿Cómo esperás que funcione al tocarlo o usarlo?
+
+No tiene funcionalidad
+
+Ejemplo, dibujo o referencia (opcional):
+
+Prioridad (alta / media / baja): Baja
