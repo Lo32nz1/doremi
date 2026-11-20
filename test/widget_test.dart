@@ -7,6 +7,7 @@ import 'package:cancionero/providers/settings_provider.dart';
 import 'package:cancionero/providers/setlist_provider.dart';
 import 'package:cancionero/screens/home_screen.dart';
 import 'package:cancionero/screens/shell_screen.dart';
+import 'package:cancionero/screens/settings/settings_screen.dart';
 import 'package:cancionero/screens/tuner/tuner_screen.dart';
 import 'package:cancionero/services/tuner_service.dart';
 import 'package:cancionero/widgets/mobile_song_controls.dart';
@@ -17,6 +18,48 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  testWidgets('settings explains the app without synchronization details', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(800, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    SharedPreferences.setMockInitialValues({});
+    final preferences = await SharedPreferences.getInstance();
+    final library = LibraryProvider();
+    final settings = SettingsProvider(preferences);
+    addTearDown(library.dispose);
+    addTearDown(settings.dispose);
+
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(value: library),
+          ChangeNotifierProvider.value(value: settings),
+        ],
+        child: const MaterialApp(home: Scaffold(body: SettingsScreen())),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('ACERCA DE'), findsOneWidget);
+    expect(
+      find.textContaining(
+        'DOREMI te ayuda a crear, organizar y leer canciones',
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.text('.chord · .pro · .chopro · .chordpro · .txt'),
+      findsOneWidget,
+    );
+    expect(find.text('Sincronización'), findsNothing);
+    expect(find.text('Syncthing (local)'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
   test('tuner compares pitch against the selected string', () {
     final e2 = InstrumentCatalog.all[1].strings.first;
     final correctString = TunerResult.fromFrequency(

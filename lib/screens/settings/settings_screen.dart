@@ -147,15 +147,51 @@ class SettingsScreen extends StatelessWidget {
                 title: 'Acerca de',
                 icon: Icons.info_outline,
                 children: [
-                  _infoRow(context, 'Versión', '1.0.0'),
-                  _divider(context),
-                  _infoRow(
-                    context,
-                    'Formatos soportados',
-                    '.chord  .pro  .txt',
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+                    child: Text(
+                      'DOREMI te ayuda a crear, organizar y leer canciones '
+                      'con letra y acordes. Puedes reunir tus canciones en '
+                      'una biblioteca, preparar setlists, ajustar la lectura '
+                      'y usar el afinador para guitarra, bajo, ukelele y violín.',
+                      style: TextStyle(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.72),
+                        fontSize: 14,
+                        height: 1.4,
+                      ),
+                    ),
                   ),
                   _divider(context),
-                  _infoRow(context, 'Sincronización', 'Syncthing (local)'),
+                  _infoRow(context, 'Versión', '1.0.0'),
+                  _divider(context),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Formatos de canciones',
+                          style: TextStyle(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.70),
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '.chord · .pro · .chopro · .chordpro · .txt',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
 
