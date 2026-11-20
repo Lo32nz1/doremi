@@ -48,10 +48,7 @@ class _ShellScreenState extends State<ShellScreen> {
   ];
 
   List<Widget> get _screens => [
-    HomeScreen(
-      onOpenSong: _openSongInStudy,
-      onOpenStudy: () => setState(() => _selectedIndex = 1),
-    ),
+    HomeScreen(onOpenSong: _openSongInStudy),
     StudyScreen(
       key: _studyKey,
       onReaderVisibilityChanged: (showingReader) {
@@ -59,7 +56,7 @@ class _ShellScreenState extends State<ShellScreen> {
         setState(() => _isShowingStudyReader = showingReader);
       },
     ),
-    SizedBox(), // Placeholder para Afinador (se navega con push)
+    _selectedIndex == 2 ? const TunerScreen() : const SizedBox.shrink(),
     SetlistsScreen(),
     SettingsScreen(),
   ];
@@ -127,16 +124,7 @@ class _ShellScreenState extends State<ShellScreen> {
           ? null
           : NavigationBar(
               selectedIndex: _selectedIndex,
-              onDestinationSelected: (i) {
-                if (i == 2) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const TunerScreen()),
-                  );
-                  return;
-                }
-                setState(() => _selectedIndex = i);
-              },
+              onDestinationSelected: (i) => setState(() => _selectedIndex = i),
               backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
               indicatorColor: Theme.of(
                 context,
@@ -175,16 +163,7 @@ class _ShellScreenState extends State<ShellScreen> {
           if (!hideRailForReader) ...[
             NavigationRail(
               selectedIndex: _selectedIndex,
-              onDestinationSelected: (i) {
-                if (i == 2) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const TunerScreen()),
-                  );
-                  return;
-                }
-                setState(() => _selectedIndex = i);
-              },
+              onDestinationSelected: (i) => setState(() => _selectedIndex = i),
               labelType: NavigationRailLabelType.all,
               backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
               indicatorColor: Theme.of(

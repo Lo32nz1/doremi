@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 /// Una cuerda/nota objetivo de un instrumento.
 class InstrumentString {
-  final String name;        // Ej: "E2", "A2", "D3"
-  final double frequency;   // Frecuencia de referencia en Hz
+  final String name; // Ej: "E2", "A2", "D3"
+  final double frequency; // Frecuencia de referencia en Hz
 
   const InstrumentString({required this.name, required this.frequency});
 }
@@ -28,7 +28,6 @@ class InstrumentCatalog {
   static const List<Instrument> all = [
     _chromatic,
     _guitarStandard,
-    _guitarDropD,
     _bass,
     _ukulele,
     _violin,
@@ -42,7 +41,7 @@ class InstrumentCatalog {
     strings: [], // Sin cuerdas fijas; el afinador muestra la nota más cercana
   );
 
-  /// Guitarra en afinación estándar: E A D G B e
+  /// Guitarra en afinación estándar, de la sexta cuerda a la primera.
   static const Instrument _guitarStandard = Instrument(
     id: 'guitar_standard',
     displayName: 'Guitarra',
@@ -57,22 +56,7 @@ class InstrumentCatalog {
     ],
   );
 
-  /// Guitarra en Drop D: D A D G B e
-  static const Instrument _guitarDropD = Instrument(
-    id: 'guitar_drop_d',
-    displayName: 'Drop D',
-    icon: Icons.music_note,
-    strings: [
-      InstrumentString(name: 'D2', frequency: 73.42),
-      InstrumentString(name: 'A2', frequency: 110.00),
-      InstrumentString(name: 'D3', frequency: 146.83),
-      InstrumentString(name: 'G3', frequency: 196.00),
-      InstrumentString(name: 'B3', frequency: 246.94),
-      InstrumentString(name: 'E4', frequency: 329.63),
-    ],
-  );
-
-  /// Bajo eléctrico estándar: E A D G
+  /// Bajo eléctrico estándar, de la cuarta cuerda a la primera.
   static const Instrument _bass = Instrument(
     id: 'bass',
     displayName: 'Bajo',
@@ -85,7 +69,7 @@ class InstrumentCatalog {
     ],
   );
 
-  /// Ukulele estándar: G C E A
+  /// Ukelele con afinación reentrante G C E A.
   static const Instrument _ukulele = Instrument(
     id: 'ukulele',
     displayName: 'Ukulele',
@@ -98,7 +82,7 @@ class InstrumentCatalog {
     ],
   );
 
-  /// Violín estándar: G D A E
+  /// Violín estándar, de la cuarta cuerda a la primera.
   static const Instrument _violin = Instrument(
     id: 'violin',
     displayName: 'Violín',
@@ -107,7 +91,7 @@ class InstrumentCatalog {
       InstrumentString(name: 'G3', frequency: 196.00),
       InstrumentString(name: 'D4', frequency: 293.66),
       InstrumentString(name: 'A4', frequency: 440.00),
-      InstrumentString(name: 'E5', frequency: 659.25),
+      InstrumentString(name: 'E5', frequency: 659.26),
     ],
   );
 }

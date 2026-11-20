@@ -7,13 +7,8 @@ import '../utils/song_dialogs.dart';
 
 class HomeScreen extends StatelessWidget {
   final ValueChanged<SongMetadata> onOpenSong;
-  final VoidCallback onOpenStudy;
 
-  const HomeScreen({
-    super.key,
-    required this.onOpenSong,
-    required this.onOpenStudy,
-  });
+  const HomeScreen({super.key, required this.onOpenSong});
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +27,7 @@ class HomeScreen extends StatelessWidget {
                 else if (!library.hasLibrary)
                   SliverFillRemaining(child: _buildWelcome(context, library))
                 else ...[
-                  SliverToBoxAdapter(
-                    child: _buildWelcomeCard(context, library),
-                  ),
+                  SliverToBoxAdapter(child: _buildWelcomeCard(context)),
                   SliverToBoxAdapter(child: _buildStatistics(context, library)),
                   SliverToBoxAdapter(
                     child: _buildRecentHeader(context, library),
@@ -49,16 +42,6 @@ class HomeScreen extends StatelessWidget {
                         return _buildRecentSong(context, song, index + 1);
                       },
                     ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-                      child: OutlinedButton.icon(
-                        onPressed: onOpenStudy,
-                        icon: const Icon(Icons.auto_stories_outlined),
-                        label: const Text('Ir al Estudio'),
-                      ),
-                    ),
-                  ),
                 ],
               ],
             ),
@@ -112,15 +95,14 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildWelcomeCard(BuildContext context, LibraryProvider library) {
+  Widget _buildWelcomeCard(BuildContext context) {
     final theme = Theme.of(context);
-    final recentCount = library.recentSongs.length;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         decoration: BoxDecoration(
           color: theme.colorScheme.primary.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(20),
@@ -132,26 +114,10 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '¡Bienvenido!',
+              '¡Crea y disfruta de tus canciones!',
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.w800,
               ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              recentCount == 0
-                  ? 'Tu música está lista. Elegí una canción en Estudio para empezar.'
-                  : 'Seguí disfrutando de tu música. Estas son tus canciones recientes.',
-              style: TextStyle(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.68),
-                height: 1.4,
-              ),
-            ),
-            const SizedBox(height: 14),
-            FilledButton.icon(
-              onPressed: onOpenStudy,
-              icon: const Icon(Icons.auto_stories_outlined),
-              label: const Text('Abrir Estudio'),
             ),
           ],
         ),
@@ -291,7 +257,7 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             const Text(
-              '¡Bienvenido a DOREMI!',
+              '¡Crea y disfruta de tus canciones!',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),

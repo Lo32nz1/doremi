@@ -1,90 +1,19 @@
-IDEAS Y CAMBIOS PARA LA APP
-==========================
+Ultimos cambios
+El tuner está funcionando mal, ademas de que cuando la nota está afinada se mueve tanto que no se entiende si está o no afinada, la idea sería hacer que la frecuencia que agarre tenga un poco mas de error, no sea la frecuencia exacta exacta.
+Las frecuencia de los intrumentos deberían ser:
 
-CAMBIO 1
---------
-Pantalla o parte de la app:
+Cuerda	Bajo (4 cuerdas)	Guitarra (6 cuerdas)	Ukelele (reentrante)	Violín
+6.ª	—	Mi2 (E2): 82,41 Hz	—	—
+5.ª	—	La2 (A2): 110,00 Hz	—	—
+4.ª	Mi1 (E1): 41,20 Hz	Re3 (D3): 146,83 Hz	Sol4 (G4): 392,00 Hz	Sol3 (G3): 196,00 Hz
+3.ª	La1 (A1): 55,00 Hz	Sol3 (G3): 196,00 Hz	Do4 (C4): 261,63 Hz	Re4 (D4): 293,66 Hz
+2.ª	Re2 (D2): 73,42 Hz	Si3 (B3): 246,94 Hz	Mi4 (E4): 329,63 Hz	La4 (A4): 440,00 Hz
+1.ª	Sol2 (G2): 98,00 Hz	Mi4 (E4): 329,63 Hz	La4 (A4): 440,00 Hz	Mi5 (E5): 659,26 Hz
 
-Estudio
+Sacá la de drop D, dejá esas nomás con esas frecuencias, y que tenga un poco mas de error así no se vuelve loca la aguja que muestra la entonación, sino no se entiende nada cuando se usa el tunner.
 
-¿Qué te gustaría cambiar o agregar?
+En la bienvenida poné algo mas como "¡Crea y disfruta de tus canciones!".
 
-No hay tamaño para que la aplicación funcione en dispositivos moviles medianamente pequeños cuando está acostada la pantalla.
+Por último hacé un txt que tenga una descripción del toda la aplicación así se la mando a mi compañero y por último necesito presentarlo, para eso me gustaría saber si pasando o no el apk es suficiente para que alguien lo pruebe, y quiero saber como poder mostrarlo en la pc para transmitirlo si hace falta.
 
-¿Cómo te gustaría que se vea en el celular?
-
-Que se vea como cuando está en vertical siempre y cuando sean dispositivos pequeños, cuando se trata de tables dejarlo como en computadoras cuando está en vertical y cuando está en horizontal como en telefonos celulares
-
-¿Cómo esperás que funcione al tocarlo o usarlo?
-
-Que funcione normalmente solo que se vea para poder utilizarla
-
-Ejemplo, dibujo o referencia (opcional):
-
-Prioridad (alta / media / baja): media
-
-CAMBIO 2
---------
-Pantalla o parte de la app:
-
-Set List
-
-¿Qué te gustaría cambiar o agregar?
-
-Cuando estoy en una setlist la idea es que cuando elija las canciones se vea como se ve en el estudio, no como se veía antes. No se si se está reutilizando código o hiciste mas código para eso, pero la idea es que se vea como se ve en el estudio pero con la set list, agregando un botón de siguiente canción en alguna parte para cambiar a la otra canción ya seleccionada.
-
-¿Cómo te gustaría que se vea en el celular?
-
-Que se vea un poco mejor la parte de setlist, porque está un poco rara, un ícolo al lado del nombre de la set list por ejemplo. ademas que tenga la misma visión que en el estudio cuando elijo una canción para tocar desde la setlist. (En este caso no hace falta la sección de la izquierda que se desplaza, solamente con la parte donde se ve ala canción es mas que suficiente)
-
-¿Cómo esperás que funcione al tocarlo o usarlo?
-
-Que funcione normalmente solo que se vea para poder utilizarla
-
-Ejemplo, dibujo o referencia (opcional):
-
-Prioridad (alta / media / baja): Alta
-
-CAMBIO 3
---------
-Pantalla o parte de la app:
-
-En todas
-
-¿Qué te gustaría cambiar o agregar?
-
-Solo en el caso de que el apretar el botón del telefono para volver atras, y eso cierre la aplicación, preguntar si desea cerrar la aplicación, para evitar cierres inesperados. Pero si apreta el botón de casa del telefono, si cerrar, solamente en el caso de apretar el botón de retroceder.
-
-¿Cómo te gustaría que se vea en el celular?
-
-Una ventana flotante preguntado si desea salir del telefono, con un si y un no, solo en el caso de apretar la botón de retroseder
-
-¿Cómo esperás que funcione al tocarlo o usarlo?
-
-Que funcione normalmente solo que se vea para poder utilizarla
-
-Ejemplo, dibujo o referencia (opcional):
-
-Prioridad (alta / media / baja): baja
-
-CAMBIO 4
---------
-Pantalla o parte de la app:
-
-Todas
-
-¿Qué te gustaría cambiar o agregar?
-
-Cambio del nombre de la aplicación a "DOREMI".
-
-¿Cómo te gustaría que se vea en el celular?
-
-Donde se ponga el nombre de la aplicación, que en vez de decir "Cancionero" diga "DOREMI". En caso de ser posible, crear un ícono para la aplicación, la idea del ícono es que diga literalmente "DOREMI"
-
-¿Cómo esperás que funcione al tocarlo o usarlo?
-
-No tiene funcionalidad
-
-Ejemplo, dibujo o referencia (opcional):
-
-Prioridad (alta / media / baja): Baja
+Ademas quiero cambiarlo de Git, como puedo hacer eso?

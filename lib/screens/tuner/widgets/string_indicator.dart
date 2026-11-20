@@ -29,76 +29,98 @@ class StringIndicator extends StatelessWidget {
     final theme = Theme.of(context);
     final nearestString = currentResult.nearestString;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: instrument.strings.map((string) {
-        final isNearest = nearestString?.name == string.name;
-        final isLocked = lockedString?.name == string.name;
-        final isHighlighted = isLocked || (!isLocked && lockedString == null && isNearest);
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: instrument.strings.map((string) {
+          final isNearest = nearestString?.name == string.name;
+          final isLocked = lockedString?.name == string.name;
+          final isHighlighted =
+              isLocked || (!isLocked && lockedString == null && isNearest);
 
-        return GestureDetector(
-          onTap: () {
-            // Tap en la misma cuerda → desfijar; tap en otra → fijar
-            if (isLocked) {
-              onStringTapped(null);
-            } else {
-              onStringTapped(string);
-            }
-          },
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 250),
-            curve: Curves.easeOutCubic,
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            width: isHighlighted ? 52 : 44,
-            height: isHighlighted ? 52 : 44,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: isHighlighted
-                  ? theme.colorScheme.primary.withValues(alpha: 0.15)
-                  : theme.colorScheme.surfaceContainer,
-              border: Border.all(
-                color: isHighlighted
-                    ? theme.colorScheme.primary
-                    : theme.colorScheme.onSurface.withValues(alpha: 0.15),
-                width: isHighlighted ? 2.0 : 1.0,
-              ),
-              boxShadow: isHighlighted
-                  ? [
-                      BoxShadow(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                        blurRadius: 10,
-                        spreadRadius: 1,
-                      )
-                    ]
-                  : null,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  string.name.replaceAll(RegExp(r'\d'), ''), // Solo la letra
-                  style: theme.textTheme.titleSmall?.copyWith(
+          return Tooltip(
+            message: isLocked
+                ? 'Desfijar cuerda ${string.name}'
+                : 'Afinar cuerda ${string.name}',
+            child: GestureDetector(
+              onTap: () {
+                if (isLocked) {
+                  onStringTapped(null);
+                } else {
+                  onStringTapped(string);
+                }
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeOutCubic,
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                width: isHighlighted ? 52 : 44,
+                height: isHighlighted ? 52 : 44,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isHighlighted
+                      ? theme.colorScheme.primary.withValues(alpha: 0.15)
+                      : theme.colorScheme.surfaceContainer,
+                  border: Border.all(
                     color: isHighlighted
                         ? theme.colorScheme.primary
-                        : theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                    fontWeight: isHighlighted ? FontWeight.w800 : FontWeight.w500,
-                    fontSize: isHighlighted ? 15 : 13,
+                        : theme.colorScheme.onSurface.withValues(alpha: 0.15),
+                    width: isHighlighted ? 2.0 : 1.0,
                   ),
+                  boxShadow: isHighlighted
+                      ? [
+                          BoxShadow(
+                            color: theme.colorScheme.primary.withValues(
+                              alpha: 0.3,
+                            ),
+                            blurRadius: 10,
+                            spreadRadius: 1,
+                          ),
+                        ]
+                      : null,
                 ),
-                Text(
-                  string.name.replaceAll(RegExp(r'[A-Z#]'), ''), // Solo el número
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: isHighlighted
-                        ? theme.colorScheme.primary.withValues(alpha: 0.8)
-                        : theme.colorScheme.onSurface.withValues(alpha: 0.4),
-                    fontSize: 9,
-                  ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      string.name.replaceAll(
+                        RegExp(r'\d'),
+                        '',
+                      ), // Solo la letra
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: isHighlighted
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.onSurface.withValues(
+                                alpha: 0.6,
+                              ),
+                        fontWeight: isHighlighted
+                            ? FontWeight.w800
+                            : FontWeight.w500,
+                        fontSize: isHighlighted ? 15 : 13,
+                      ),
+                    ),
+                    Text(
+                      string.name.replaceAll(
+                        RegExp(r'[A-Z#]'),
+                        '',
+                      ), // Solo el número
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: isHighlighted
+                            ? theme.colorScheme.primary.withValues(alpha: 0.8)
+                            : theme.colorScheme.onSurface.withValues(
+                                alpha: 0.4,
+                              ),
+                        fontSize: 9,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        );
-      }).toList(),
+          );
+        }).toList(),
+      ),
     );
   }
 }
