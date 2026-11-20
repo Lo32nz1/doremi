@@ -4,6 +4,8 @@ DOREMI es una aplicación multiplataforma para organizar y leer canciones con
 acordes. Incluye biblioteca e historial de canciones, setlists, controles de
 lectura y un afinador cromático para guitarra, bajo, ukelele y violín.
 
+Creado por Lorenzo, Jeremias y   Valentin
+
 ## Requisitos
 
 - Flutter 3.41 o posterior (Dart 3.11.4 o posterior).
