@@ -2,8 +2,21 @@
 
 DOREMI es una aplicación para android y próximamente para las demás plataforma, la misma sirve para organizar, leer canciones con
 acordes, afinar los instrumentos, etc. 
-En lo que se centra la aplicación es en intentar facilitar el uso, y la centralización de las canciones de los músicos, conteniendo las canciones con información importante para el músico, como los acordes, expecificaciones importantes en las canciones, creación de canciones, formateo de las mismas, transpocisión músical, entre otras necesidades.
-Se centraliza en poder enfocar todo en un punto central donde no se necesite pagar o tener muchas aplicaciones distintas 
+
+## ¿Por qué DOREMI? (Origen del proyecto)
+
+La idea de DOREMI nació de una necesidad cotidiana de los músicos: digitalizar el repertorio para dejar atrás las carpetas físicas enormes, pesadas y llenas de hojas sueltas. El formato en papel trae problemas frecuentes al ensayar o tocar en vivo, como que las hojas se pierdan, se mojen, se deterioren o terminar imprimiendo canciones duplicadas por desorganización. 
+
+Para resolver esto, se creó esta aplicación como un espacio único, accesible y ordenado donde llevar todo el cancionero en el bolsillo, sin depender de múltiples herramientas ni suscripciones.
+
+## Funcionalidades principales
+
+- **Gestión de canciones:** Creación, edición, organización y lectura de canciones con acordes posicionados directamente sobre la letra y notas o especificaciones adicionales para el músico.
+- **Formateo de canciones:** Estructuración clara y ordenada del contenido musical para facilitar su lectura en cualquier momento.
+- **Transposición musical:** Cambio rápido de tonalidad para adaptar cualquier canción al registro vocal o a la afinación del instrumento.
+- **Organización de repertorios (Setlists):** Agrupación y ordenamiento de canciones para ensayos o presentaciones en vivo sin duplicar material.
+- **Afinador de instrumentos integrado:** Detección de frecuencia en tiempo real mediante el micrófono del dispositivo, sin necesidad de instalar aplicaciones externas.
+- **Uso centralizado y sin conexión:** Todo el cancionero disponible en un solo lugar, pensado para acceder rápido sin depender de carpetas físicas ni suscripciones.
 
 ## Requisitos
 
