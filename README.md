@@ -1,10 +1,9 @@
 # DOREMI
 
-DOREMI es una aplicación multiplataforma para organizar y leer canciones con
-acordes. Incluye biblioteca e historial de canciones, setlists, controles de
-lectura y un afinador cromático para guitarra, bajo, ukelele y violín.
-
-Creado por Lorenzo, Jeremias y   Valentin
+DOREMI es una aplicación para android y próximamente para las demás plataforma, la misma sirve para organizar, leer canciones con
+acordes, afinar los instrumentos, etc. 
+En lo que se centra la aplicación es en intentar facilitar el uso, y la centralización de las canciones de los músicos, conteniendo las canciones con información importante para el músico, como los acordes, expecificaciones importantes en las canciones, creación de canciones, formateo de las mismas, transpocisión músical, entre otras necesidades.
+Se centraliza en poder enfocar todo en un punto central donde no se necesite pagar o tener muchas aplicaciones distintas 
 
 ## Requisitos
 
