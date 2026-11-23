@@ -22,12 +22,22 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.cancionero.cancionero"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+    }
+
+    flavorDimensions += "device"
+    productFlavors {
+        create("moderno") {
+            dimension = "device"
+            minSdk = flutter.minSdkVersion // Mantiene API 24+ (Android 7.0 o superior)
+        }
+        create("tabletVieja") {
+            dimension = "device"
+            minSdk = flutter.minSdkVersion // Fuerza API 23 (Android 6.0 Marshmallow para la SM-T700)
+        }
     }
 
     buildTypes {
@@ -37,8 +47,4 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
-}
-
-flutter {
-    source = "../.."
 }

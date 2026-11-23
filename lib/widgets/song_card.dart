@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/song.dart';
 import '../providers/library_provider.dart';
+import '../providers/settings_provider.dart';
+import '../utils/chord_transposer.dart';
 
 class SongCard extends StatelessWidget {
   final SongMetadata song;
@@ -83,21 +85,35 @@ class SongCard extends StatelessWidget {
                 ),
                 // Badge de tono
                 if (song.key.isNotEmpty)
-                  Container(
-                    margin: const EdgeInsets.only(right: 8),
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF5A623).withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Text(
-                      song.key,
-                      style: const TextStyle(
-                        color: Color(0xFFF5A623),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
+                  Builder(
+                    builder: (context) {
+                      final notation = context
+                          .watch<SettingsProvider>()
+                          .chordNotation;
+                      final displayKey = ChordTransposer.formatChord(
+                        song.key,
+                        notation: notation,
+                      );
+                      return Container(
+                        margin: const EdgeInsets.only(right: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF5A623).withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          displayKey,
+                          style: const TextStyle(
+                            color: Color(0xFFF5A623),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 IconButton(
                   icon: const Icon(Icons.delete_outline, color: Colors.redAccent),

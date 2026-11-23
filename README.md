@@ -9,7 +9,7 @@ La idea de DOREMI nació de una necesidad cotidiana de los músicos: digitalizar
 
 Para resolver esto, se creó esta aplicación como un espacio único, accesible y ordenado donde llevar todo el cancionero en el bolsillo, sin depender de múltiples herramientas ni suscripciones.
 
-## Funcionalidades principales
+## Funcionalidades principales 
 
 - **Gestión de canciones:** Creación, edición, organización y lectura de canciones con acordes posicionados directamente sobre la letra y notas o especificaciones adicionales para el músico.
 - **Formateo de canciones:** Estructuración clara y ordenada del contenido musical para facilitar su lectura en cualquier momento.

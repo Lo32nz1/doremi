@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/library_provider.dart';
 import '../../providers/settings_provider.dart';
+import '../../utils/chord_transposer.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -77,15 +78,18 @@ class SettingsScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Tamaño de letra',
-                          style: TextStyle(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurface.withValues(alpha: 0.70),
-                            fontSize: 14,
+                        Expanded(
+                          child: Text(
+                            'Tamaño de letra',
+                            style: TextStyle(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.70),
+                              fontSize: 14,
+                            ),
                           ),
                         ),
+                        const SizedBox(width: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 10,
@@ -128,6 +132,8 @@ class SettingsScreen extends StatelessWidget {
                     value: settings.showChords,
                     onChanged: settings.setShowChords,
                   ),
+                  _divider(context),
+                  _chordNotationRow(context, settings),
                   _divider(context),
                   _switchRow(
                     context,
@@ -227,13 +233,15 @@ class SettingsScreen extends StatelessWidget {
                   size: 16,
                 ),
                 const SizedBox(width: 8),
-                Text(
-                  title.toUpperCase(),
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 11,
-                    letterSpacing: 1.2,
+                Expanded(
+                  child: Text(
+                    title.toUpperCase(),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 11,
+                      letterSpacing: 1.2,
+                    ),
                   ),
                 ),
               ],
@@ -292,6 +300,57 @@ class SettingsScreen extends StatelessWidget {
               color: Theme.of(context).colorScheme.onSurface,
               fontWeight: FontWeight.w500,
               fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _chordNotationRow(BuildContext context, SettingsProvider settings) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Notación de acordes',
+            style: TextStyle(
+              color: colorScheme.onSurface.withValues(alpha: 0.70),
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            'Cifrado americano (C, G, A) o latino (Do, Sol, La)',
+            style: TextStyle(
+              color: colorScheme.onSurface.withValues(alpha: 0.38),
+              fontSize: 12,
+            ),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: double.infinity,
+            child: SegmentedButton<ChordNotation>(
+              showSelectedIcon: false,
+              segments: const [
+                ButtonSegment<ChordNotation>(
+                  value: ChordNotation.american,
+                  label: Text('C, G, A'),
+                ),
+                ButtonSegment<ChordNotation>(
+                  value: ChordNotation.latin,
+                  label: Text('Do, Sol, La'),
+                ),
+              ],
+              selected: {settings.chordNotation},
+              onSelectionChanged: (selection) {
+                if (selection.isNotEmpty) {
+                  settings.setChordNotation(selection.first);
+                }
+              },
             ),
           ),
         ],

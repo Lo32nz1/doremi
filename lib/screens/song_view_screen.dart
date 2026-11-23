@@ -52,23 +52,24 @@ class _SongViewScreenState extends State<SongViewScreen> {
   bool _hasUnsavedChanges = false;
   int _transposeSteps = 0;
   bool _useFlats = false;
+  bool _hasCustomAccidentals = false;
+  ChordNotation _chordNotation = ChordNotation.american;
 
   Song? get _displaySong {
     if (_song == null) return null;
-    if (_transposeSteps == 0 &&
-        !_useFlats &&
-        !_song!.metadata.key.contains('b')) {
-      return _song;
-    }
     return ChordTransposer.transposeSong(
       _song!,
       _transposeSteps,
       useFlats: _useFlats,
+      notation: _chordNotation,
+      preserveAccidentals: _transposeSteps == 0 && !_hasCustomAccidentals,
     );
   }
 
   late TextEditingController _editController;
+  late SettingsProvider _settingsProvider;
   double _initialFontSize = 16;
+  bool _isPinchingFontSize = false;
 
   static const double _maxContentWidth = 780;
   static const double _panelBreakpoint = 600;
@@ -80,9 +81,13 @@ class _SongViewScreenState extends State<SongViewScreen> {
   void initState() {
     super.initState();
     _currentMetadata = widget.metadata;
-    final settings = context.read<SettingsProvider>();
-    _fontSize = settings.fontSize;
-    _viewMode = settings.showChords ? _ViewMode.normal : _ViewMode.lyrics;
+    _settingsProvider = context.read<SettingsProvider>();
+    _fontSize = _settingsProvider.fontSize;
+    _viewMode = _settingsProvider.showChords
+        ? _ViewMode.normal
+        : _ViewMode.lyrics;
+    _chordNotation = _settingsProvider.chordNotation;
+    _settingsProvider.addListener(_handleSettingsChanged);
     _editController = TextEditingController();
     if (_currentMetadata != null) {
       _loadSong();
@@ -91,8 +96,23 @@ class _SongViewScreenState extends State<SongViewScreen> {
     }
   }
 
+  void _handleSettingsChanged() {
+    if (!mounted) return;
+    final nextFontSize = _isPinchingFontSize
+        ? _fontSize
+        : _settingsProvider.fontSize;
+    final nextNotation = _settingsProvider.chordNotation;
+    if (nextFontSize != _fontSize || nextNotation != _chordNotation) {
+      setState(() {
+        _fontSize = nextFontSize;
+        _chordNotation = nextNotation;
+      });
+    }
+  }
+
   @override
   void dispose() {
+    _settingsProvider.removeListener(_handleSettingsChanged);
     _editController.dispose();
     super.dispose();
   }
@@ -113,7 +133,8 @@ class _SongViewScreenState extends State<SongViewScreen> {
         _isLoading = false;
         _hasUnsavedChanges = false;
         _transposeSteps = 0;
-        _useFlats = song.metadata.key.contains('b');
+        _useFlats = ChordTransposer.usesFlatNotation(song.metadata.key);
+        _hasCustomAccidentals = false;
       });
       unawaited(context.read<LibraryProvider>().recordSongOpened(metadata));
     } catch (e) {
@@ -331,6 +352,8 @@ class _SongViewScreenState extends State<SongViewScreen> {
             if (!isCompact && _viewMode != _ViewMode.edit)
               _buildTransposeControls(),
             if (!isCompact && _viewMode != _ViewMode.edit)
+              _buildNotationToggle(),
+            if (!isCompact && _viewMode != _ViewMode.edit)
               IconButton(
                 icon: Icon(
                   Icons.playlist_add,
@@ -393,6 +416,12 @@ class _SongViewScreenState extends State<SongViewScreen> {
         ),
       );
     }
+  }
+
+  void _setChordNotation(ChordNotation notation) {
+    if (_chordNotation == notation) return;
+    setState(() => _chordNotation = notation);
+    unawaited(context.read<SettingsProvider>().setChordNotation(notation));
   }
 
   Widget _buildMobileTopBar() {
@@ -472,6 +501,8 @@ class _SongViewScreenState extends State<SongViewScreen> {
                     if (_viewMode != _ViewMode.edit) ...[
                       const SizedBox(width: 4),
                       _buildMobileTransposeControls(key),
+                      const SizedBox(width: 4),
+                      _buildMobileNotationToggle(),
                       const SizedBox(width: 4),
                       _buildMobileFontControls(),
                     ],
@@ -557,6 +588,8 @@ class _SongViewScreenState extends State<SongViewScreen> {
                       originalKey,
                       steps,
                       useFlats: _useFlats,
+                      notation: _chordNotation,
+                      preserveAccidentals: steps == 0 && !_hasCustomAccidentals,
                     );
               return PopupMenuItem(value: steps, child: Text(label));
             }).toList(),
@@ -585,13 +618,60 @@ class _SongViewScreenState extends State<SongViewScreen> {
             visualDensity: VisualDensity.compact,
             constraints: const BoxConstraints.tightFor(width: 32, height: 40),
             padding: EdgeInsets.zero,
-            onPressed: () => setState(() => _useFlats = !_useFlats),
+            onPressed: () => setState(() {
+              _useFlats = !_useFlats;
+              _hasCustomAccidentals = true;
+            }),
             icon: Text(
               _useFlats ? '♭' : '#',
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildMobileNotationToggle() {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isLatin = _chordNotation == ChordNotation.latin;
+
+    return Tooltip(
+      message: isLatin
+          ? 'Cambiar a cifrado americano (C, G, A)'
+          : 'Cambiar a cifrado latino (Do, Sol, La)',
+      child: Material(
+        color: colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(10),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(10),
+          onTap: () => _setChordNotation(
+            isLatin ? ChordNotation.american : ChordNotation.latin,
+          ),
+          child: Container(
+            height: 40,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: isLatin
+                    ? colorScheme.primary.withValues(alpha: 0.45)
+                    : colorScheme.onSurface.withValues(alpha: 0.12),
+              ),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              isLatin ? 'Do Re' : 'C D E',
+              style: TextStyle(
+                color: isLatin
+                    ? colorScheme.primary
+                    : colorScheme.onSurface.withValues(alpha: 0.8),
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -831,6 +911,9 @@ class _SongViewScreenState extends State<SongViewScreen> {
           case 'transpose':
             _showTransposePicker();
             break;
+          case 'notation':
+            _showNotationPicker();
+            break;
           case 'setlist':
             _showAddToSetlistModal();
             break;
@@ -864,6 +947,20 @@ class _SongViewScreenState extends State<SongViewScreen> {
             child: ListTile(
               leading: Icon(Icons.music_note_outlined),
               title: Text('Cambiar tono'),
+              contentPadding: EdgeInsets.zero,
+            ),
+          ),
+        if (_viewMode != _ViewMode.edit)
+          PopupMenuItem(
+            value: 'notation',
+            child: ListTile(
+              leading: const Icon(Icons.translate),
+              title: const Text('Notación de acordes'),
+              subtitle: Text(
+                _chordNotation == ChordNotation.latin
+                    ? 'Latino (Do, Sol, La)'
+                    : 'Americano (C, G, A)',
+              ),
               contentPadding: EdgeInsets.zero,
             ),
           ),
@@ -954,6 +1051,57 @@ class _SongViewScreenState extends State<SongViewScreen> {
     );
   }
 
+  void _showNotationPicker() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+      builder: (_) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Notación de acordes',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.music_note_outlined),
+              title: const Text('Americano (C, D, E, F, G, A, B)'),
+              selected: _chordNotation == ChordNotation.american,
+              trailing: _chordNotation == ChordNotation.american
+                  ? Icon(
+                      Icons.check,
+                      color: Theme.of(context).colorScheme.primary,
+                    )
+                  : null,
+              onTap: () {
+                _setChordNotation(ChordNotation.american);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.music_note),
+              title: const Text('Latino (Do, Re, Mi, Fa, Sol, La, Si)'),
+              selected: _chordNotation == ChordNotation.latin,
+              trailing: _chordNotation == ChordNotation.latin
+                  ? Icon(
+                      Icons.check,
+                      color: Theme.of(context).colorScheme.primary,
+                    )
+                  : null,
+              onTap: () {
+                _setChordNotation(ChordNotation.latin);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _showTransposePicker() {
     showModalBottomSheet(
       context: context,
@@ -986,6 +1134,8 @@ class _SongViewScreenState extends State<SongViewScreen> {
                       originalKey,
                       s,
                       useFlats: _useFlats,
+                      notation: _chordNotation,
+                      preserveAccidentals: s == 0 && !_hasCustomAccidentals,
                     );
                     label = s == 0 ? '$k (Original)' : k;
                   }
@@ -1006,7 +1156,10 @@ class _SongViewScreenState extends State<SongViewScreen> {
                 title: const Text('Usar bemoles (♭)'),
                 value: _useFlats,
                 onChanged: (val) {
-                  setState(() => _useFlats = val);
+                  setState(() {
+                    _useFlats = val;
+                    _hasCustomAccidentals = true;
+                  });
                   Navigator.pop(ctx);
                   _showTransposePicker();
                 },
@@ -1407,6 +1560,8 @@ class _SongViewScreenState extends State<SongViewScreen> {
                           originalKey,
                           s,
                           useFlats: _useFlats,
+                          notation: _chordNotation,
+                          preserveAccidentals: s == 0 && !_hasCustomAccidentals,
                         );
                         label = s == 0 ? '$k (Original)' : k;
                       }
@@ -1465,7 +1620,10 @@ class _SongViewScreenState extends State<SongViewScreen> {
                 ),
                 Container(width: 1, color: borderColor),
                 InkWell(
-                  onTap: () => setState(() => _useFlats = !_useFlats),
+                  onTap: () => setState(() {
+                    _useFlats = !_useFlats;
+                    _hasCustomAccidentals = true;
+                  }),
                   child: Container(
                     width: 42,
                     alignment: Alignment.center,
@@ -1480,6 +1638,73 @@ class _SongViewScreenState extends State<SongViewScreen> {
                       ),
                     ),
                   ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNotationToggle() {
+    final colorScheme = Theme.of(context).colorScheme;
+    final borderColor = colorScheme.onSurface.withValues(alpha: 0.15);
+
+    Widget buildOption(ChordNotation notation, String label, String tooltip) {
+      final isSelected = _chordNotation == notation;
+      return Tooltip(
+        message: tooltip,
+        child: InkWell(
+          onTap: () => _setChordNotation(notation),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            color: isSelected
+                ? colorScheme.primary.withValues(alpha: 0.15)
+                : Colors.transparent,
+            alignment: Alignment.center,
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: isSelected
+                    ? colorScheme.primary
+                    : colorScheme.onSurface.withValues(alpha: 0.65),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 12),
+      child: Container(
+        height: 36,
+        decoration: BoxDecoration(
+          color: colorScheme.surfaceContainer,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: borderColor),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(7),
+          child: Material(
+            color: Colors.transparent,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                buildOption(
+                  ChordNotation.american,
+                  'C D E',
+                  'Cifrado americano (C, G, A)',
+                ),
+                Container(width: 1, color: borderColor),
+                buildOption(
+                  ChordNotation.latin,
+                  'Do Re',
+                  'Cifrado latino (Do, Sol, La)',
                 ),
               ],
             ),
@@ -1552,9 +1777,13 @@ class _SongViewScreenState extends State<SongViewScreen> {
     final effectiveFontSize = _viewMode == _ViewMode.lyrics
         ? _fontSize + 3
         : _fontSize;
+    final isNarrow = MediaQuery.sizeOf(context).width < 480;
 
     return GestureDetector(
-      onScaleStart: (_) => _initialFontSize = _fontSize,
+      onScaleStart: (_) {
+        _isPinchingFontSize = true;
+        _initialFontSize = _fontSize;
+      },
       onScaleUpdate: (details) {
         if (details.scale != 1.0) {
           setState(() {
@@ -1562,9 +1791,15 @@ class _SongViewScreenState extends State<SongViewScreen> {
           });
         }
       },
-      onScaleEnd: (_) => _persistFontSize(),
+      onScaleEnd: (_) {
+        _isPinchingFontSize = false;
+        _persistFontSize();
+      },
       child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 20),
+        padding: EdgeInsets.symmetric(
+          vertical: 28,
+          horizontal: isNarrow ? 14 : 20,
+        ),
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: _maxContentWidth),
@@ -1578,6 +1813,7 @@ class _SongViewScreenState extends State<SongViewScreen> {
                     s,
                     showChords: showChords,
                     fontSize: effectiveFontSize,
+                    isNarrow: isNarrow,
                   ),
                 ),
                 const SizedBox(height: 48),
@@ -1744,6 +1980,7 @@ class _SongViewScreenState extends State<SongViewScreen> {
           Wrap(
             alignment: WrapAlignment.center,
             spacing: 10,
+            runSpacing: 8,
             children: [
               if (meta.key.isNotEmpty)
                 _badge(
@@ -1830,6 +2067,7 @@ class _SongViewScreenState extends State<SongViewScreen> {
     SongSection section, {
     required bool showChords,
     required double fontSize,
+    bool isNarrow = false,
   }) {
     final (labelColor, borderColor, bgColor) = switch (section.type) {
       SectionType.chorus => (
@@ -1861,58 +2099,60 @@ class _SongViewScreenState extends State<SongViewScreen> {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 28),
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Borde lateral de color (sin texto)
-            Container(
+      child: Stack(
+        children: [
+          // Borde lateral de color (sin texto)
+          Positioned(
+            left: 0,
+            top: 0,
+            bottom: 0,
+            child: Container(
               width: 3,
-              margin: const EdgeInsets.only(right: 14),
               decoration: BoxDecoration(
                 color: borderColor,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            // Contenido centrado
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.fromLTRB(8, 6, 8, 10),
-                decoration: BoxDecoration(
-                  color: bgColor,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (section.type != SectionType.verse &&
-                        section.type != SectionType.other)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 6, top: 4),
-                        child: Text(
-                          section.name.toUpperCase(),
-                          style: TextStyle(
-                            color: labelColor,
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.5,
-                          ),
+          ),
+          // Contenido
+          Padding(
+            padding: EdgeInsets.only(left: isNarrow ? 11 : 17),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(8, 6, 8, 10),
+              decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (section.type != SectionType.verse &&
+                      section.type != SectionType.other)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 6, top: 4),
+                      child: Text(
+                        section.name.toUpperCase(),
+                        style: TextStyle(
+                          color: labelColor,
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.5,
                         ),
                       ),
-                    ...section.lines.map(
-                      (line) => ChordLineWidget(
-                        line: line,
-                        fontSize: fontSize,
-                        showChords: showChords,
-                      ),
                     ),
-                  ],
-                ),
+                  ...section.lines.map(
+                    (line) => ChordLineWidget(
+                      line: line,
+                      fontSize: fontSize,
+                      showChords: showChords,
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -2205,7 +2445,10 @@ class _SongListPanelState extends State<_SongListPanel> {
               // Badge de tono
               if (song.key.isNotEmpty)
                 Text(
-                  song.key,
+                  ChordTransposer.formatChord(
+                    song.key,
+                    notation: context.watch<SettingsProvider>().chordNotation,
+                  ),
                   style: TextStyle(
                     color: isCurrent
                         ? Theme.of(context).colorScheme.primary
